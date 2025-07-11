@@ -3,6 +3,7 @@
     This script is not intended to be modified.
 
     Author: dawid
+    License: MIT
     GitHub: https://github.com/dawid-scripts/Fluent
 --]]
 
