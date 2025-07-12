@@ -1,11 +1,11 @@
-local httpService = game:GetService("HttpService")
+local HttpService = game:GetService("HttpService")
 
 local InterfaceManager = {} do
-	InterfaceManager.Folder = "FluentSettings"
+	InterfaceManager.Folder = "R3TH PRIV"
     InterfaceManager.Settings = {
-        Theme = "Dark",
-        Acrylic = true,
-        Transparency = true,
+        Theme = "Darker",
+        Acrylic = false,
+        Transparency = false,
         MenuKeybind = "LeftControl"
     }
 
@@ -38,14 +38,14 @@ local InterfaceManager = {} do
 	end
 
     function InterfaceManager:SaveSettings()
-        writefile(self.Folder .. "/options.json", httpService:JSONEncode(InterfaceManager.Settings))
+        writefile(self.Folder .. "/options.json", HttpService:JSONEncode(InterfaceManager.Settings))
     end
 
     function InterfaceManager:LoadSettings()
         local path = self.Folder .. "/options.json"
         if isfile(path) then
             local data = readfile(path)
-            local success, decoded = pcall(httpService.JSONDecode, httpService, data)
+            local success, decoded = pcall(HttpService.JSONDecode, HttpService, data)
 
             if success then
                 for i, v in next, decoded do
@@ -56,7 +56,7 @@ local InterfaceManager = {} do
     end
 
     function InterfaceManager:BuildInterfaceSection(tab)
-        assert(self.Library, "Must set InterfaceManager.Library")
+        assert(self.Library, "Must set InterfaceManager.Library.")
 		local Library = self.Library
         local Settings = InterfaceManager.Settings
 
@@ -66,7 +66,7 @@ local InterfaceManager = {} do
 
 		local InterfaceTheme = section:AddDropdown("InterfaceTheme", {
 			Title = "Theme",
-			Description = "Changes the interface theme.",
+			Description = "Changes the interface's theme.",
 			Values = Library.Themes,
 			Default = Settings.Theme,
 			Callback = function(Value)
@@ -81,7 +81,7 @@ local InterfaceManager = {} do
 		if Library.UseAcrylic then
 			section:AddToggle("AcrylicToggle", {
 				Title = "Acrylic",
-				Description = "The blurred background requires graphic quality 8+",
+				Description = "Acrylic requires graphic quality 8+.",
 				Default = Settings.Acrylic,
 				Callback = function(Value)
 					Library:ToggleAcrylic(Value)
@@ -93,7 +93,7 @@ local InterfaceManager = {} do
 	
 		section:AddToggle("TransparentToggle", {
 			Title = "Transparency",
-			Description = "Makes the interface transparent.",
+			Description = "Makes the interface semi-transparent.",
 			Default = Settings.Transparency,
 			Callback = function(Value)
 				Library:ToggleTransparency(Value)
