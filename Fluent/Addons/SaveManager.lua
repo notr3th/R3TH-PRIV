@@ -1,7 +1,7 @@
-local httpService = game:GetService("HttpService")
+local HttpService = game:GetService("HttpService")
 
 local SaveManager = {} do
-	SaveManager.Folder = "FluentSettings"
+	SaveManager.Folder = "R3TH PRIV"
 	SaveManager.Ignore = {}
 	SaveManager.Parser = {
 		Toggle = {
@@ -80,7 +80,7 @@ local SaveManager = {} do
 
 	function SaveManager:Save(name)
 		if (not name) then
-			return false, "no config file is selected"
+			return false, "No configuration file is specified."
 		end
 
 		local fullPath = self.Folder .. "/settings/" .. name .. ".json"
@@ -96,9 +96,9 @@ local SaveManager = {} do
 			table.insert(data.objects, self.Parser[option.Type].Save(idx, option))
 		end	
 
-		local success, encoded = pcall(httpService.JSONEncode, httpService, data)
+		local success, encoded = pcall(HttpService.JSONEncode, HttpService, data)
 		if not success then
-			return false, "failed to encode data"
+			return false, "Failed to encode data."
 		end
 
 		writefile(fullPath, encoded)
@@ -107,18 +107,18 @@ local SaveManager = {} do
 
 	function SaveManager:Load(name)
 		if (not name) then
-			return false, "no config file is selected"
+			return false, "No configuration file is specified."
 		end
 		
 		local file = self.Folder .. "/settings/" .. name .. ".json"
-		if not isfile(file) then return false, "invalid file" end
+		if not isfile(file) then return false, "Invalid file." end
 
-		local success, decoded = pcall(httpService.JSONDecode, httpService, readfile(file))
-		if not success then return false, "decode error" end
+		local success, decoded = pcall(HttpService.JSONDecode, HttpService, readfile(file))
+		if not success then return false, "Failed to decode data." end
 
 		for _, option in next, decoded.objects do
 			if self.Parser[option.type] then
-				task.spawn(function() self.Parser[option.type].Load(option.idx, option) end) -- task.spawn() so the config loading wont get stuck.
+				task.spawn(function() self.Parser[option.type].Load(option.idx, option) end)
 			end
 		end
 
@@ -185,17 +185,17 @@ local SaveManager = {} do
 			local success, err = self:Load(name)
 			if not success then
 				return self.Library:Notify({
-					Title = "Interface",
-					Content = "Config loader",
-					SubContent = "Failed to load autoload config: " .. err,
+					Title = "R3TH PRIV",
+					Content = "Configuration Loader",
+					SubContent = "Failed to load the autoload configuration: " .. err,
 					Duration = 7
 				})
 			end
 
 			self.Library:Notify({
-				Title = "Interface",
-				Content = "Config loader",
-				SubContent = string.format("Auto loaded config %q", name),
+				Title = "R3TH PRIV",
+				Content = "Configuration Loader",
+				SubContent = string.format("Successfully auto-loaded: %q", name),
 				Duration = 7
 			})
 		end
@@ -206,19 +206,19 @@ local SaveManager = {} do
 
 		local section = tab:AddSection("Configuration")
 
-		section:AddInput("SaveManager_ConfigName",    { Title = "Config name" })
-		section:AddDropdown("SaveManager_ConfigList", { Title = "Config list", Values = self:RefreshConfigList(), AllowNull = true })
+		section:AddInput("SaveManager_ConfigName",    { Title = "Configuration name" })
+		section:AddDropdown("SaveManager_ConfigList", { Title = "Configuration list", Values = self:RefreshConfigList(), AllowNull = true })
 
 		section:AddButton({
-            Title = "Create config",
+            Title = "Create configuration",
             Callback = function()
                 local name = SaveManager.Options.SaveManager_ConfigName.Value
 
                 if name:gsub(" ", "") == "" then 
                     return self.Library:Notify({
-						Title = "Interface",
-						Content = "Config loader",
-						SubContent = "Invalid config name (empty)",
+						Title = "R3TH PRIV",
+						Content = "Configuration Loader,
+						SubContent = "The configuration cannot have an empty name.",
 						Duration = 7
 					})
                 end
@@ -226,17 +226,17 @@ local SaveManager = {} do
                 local success, err = self:Save(name)
                 if not success then
                     return self.Library:Notify({
-						Title = "Interface",
-						Content = "Config loader",
-						SubContent = "Failed to save config: " .. err,
+						Title = "R3TH PRIV",
+						Content = "Configuration Loader",
+						SubContent = "Failed to save configuration: " .. err,
 						Duration = 7
 					})
                 end
 
 				self.Library:Notify({
-					Title = "Interface",
-					Content = "Config loader",
-					SubContent = string.format("Created config %q", name),
+					Title = "R3TH PRIV",
+					Content = "Configuration Loader",
+					SubContent = string.format("Successfully created: %q", name),
 					Duration = 7
 				})
 
@@ -245,69 +245,69 @@ local SaveManager = {} do
             end
         })
 
-        section:AddButton({Title = "Load config", Callback = function()
+        section:AddButton({Title = "Load configuration", Callback = function()
 			local name = SaveManager.Options.SaveManager_ConfigList.Value
 
 			local success, err = self:Load(name)
 			if not success then
 				return self.Library:Notify({
-					Title = "Interface",
-					Content = "Config loader",
-					SubContent = "Failed to load config: " .. err,
+					Title = "R3TH PRIV",
+					Content = "Configuration Loader",
+					SubContent = "Failed to load configuration: " .. err,
 					Duration = 7
 				})
 			end
 
 			self.Library:Notify({
-				Title = "Interface",
-				Content = "Config loader",
-				SubContent = string.format("Loaded config %q", name),
+				Title = "R3TH PRIV",
+				Content = "Configuration Loader",
+				SubContent = string.format("Successfully loaded: %q", name),
 				Duration = 7
 			})
 		end})
 
-		section:AddButton({Title = "Overwrite config", Callback = function()
+		section:AddButton({Title = "Overwrite configuration", Callback = function()
 			local name = SaveManager.Options.SaveManager_ConfigList.Value
 
 			local success, err = self:Save(name)
 			if not success then
 				return self.Library:Notify({
-					Title = "Interface",
-					Content = "Config loader",
-					SubContent = "Failed to overwrite config: " .. err,
+					Title = "R3TH PRIV",
+					Content = "Configuration Loader",
+					SubContent = "Failed to overwrite configuration: " .. err,
 					Duration = 7
 				})
 			end
 
 			self.Library:Notify({
-				Title = "Interface",
-				Content = "Config loader",
-				SubContent = string.format("Overwrote config %q", name),
+				Title = "R3TH PRIV",
+				Content = "Configuration Loader",
+				SubContent = string.format("Successfully overwrote: %q", name),
 				Duration = 7
 			})
 		end})
 
-		section:AddButton({Title = "Refresh list", Callback = function()
+		section:AddButton({Title = "Refresh configuration list", Callback = function()
 			SaveManager.Options.SaveManager_ConfigList:SetValues(self:RefreshConfigList())
 			SaveManager.Options.SaveManager_ConfigList:SetValue(nil)
 		end})
 
 		local AutoloadButton
-		AutoloadButton = section:AddButton({Title = "Set as autoload", Description = "Current autoload config: none", Callback = function()
+		AutoloadButton = section:AddButton({Title = "Auto-load the specified configuration.", Description = "Current autoload configuration: none", Callback = function()
 			local name = SaveManager.Options.SaveManager_ConfigList.Value
 			writefile(self.Folder .. "/settings/autoload.txt", name)
-			AutoloadButton:SetDesc("Current autoload config: " .. name)
+			AutoloadButton:SetDesc("Current autoload configuration: " .. name)
 			self.Library:Notify({
-				Title = "Interface",
-				Content = "Config loader",
-				SubContent = string.format("Set %q to auto load", name),
+				Title = "R3TH PRIV",
+				Content = "Configuration Loader",
+				SubContent = string.format("Set %q to automatically load.", name),
 				Duration = 7
 			})
 		end})
 
 		if isfile(self.Folder .. "/settings/autoload.txt") then
 			local name = readfile(self.Folder .. "/settings/autoload.txt")
-			AutoloadButton:SetDesc("Current autoload config: " .. name)
+			AutoloadButton:SetDesc("Current autoload configuration: " .. name)
 		end
 
 		SaveManager:SetIgnoreIndexes({ "SaveManager_ConfigList", "SaveManager_ConfigName" })
