@@ -217,7 +217,7 @@ local SaveManager = {} do
                 if name:gsub(" ", "") == "" then 
                     return self.Library:Notify({
 						Title = "R3TH PRIV",
-						Content = "Configuration Loader,
+						Content = "Configuration Loader",
 						SubContent = "The configuration cannot have an empty name.",
 						Duration = 7
 					})
