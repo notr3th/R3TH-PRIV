@@ -4,7 +4,6 @@ local LocalPlayer = Players.LocalPlayer
 
 local PlayerDropdown, MultiTargetDropdown
 
--------\\ UI Variables //-------
 --[[
     You may swap these three links back to the original ones, it will not break my dropdown refresh fix, I'm only using them because I slightly modified them for my script.
 
