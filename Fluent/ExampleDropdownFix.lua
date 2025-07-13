@@ -2,10 +2,12 @@
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 
+local PlayerDropdown, MultiTargetDropdown
+
 -------\\ UI Variables //-------
-local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
-local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/SaveManager.lua"))()
-local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
+local Fluent = loadstring(game:HttpGet("https://raw.githubusercontent.com/R3THdev/R3TH-PRIV/refs/heads/main/Fluent/Fluent.lua"))()
+local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/R3THdev/R3TH-PRIV/refs/heads/main/Fluent/Addons/SaveManager.lua"))()
+local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/R3THdev/R3TH-PRIV/refs/heads/main/Fluent/Addons/InterfaceManager.lua"))()
 
 local Window = Fluent:CreateWindow({
     Title = "Fluent " .. Fluent.Version,
@@ -43,20 +45,19 @@ local function GetPlayerNames()
     return names
 end
 
-local function RefreshPlayerDropdowns()
+local function refreshDropdowns()
     local newList = GetPlayerNames()
     PlayerDropdown:SetValues(newList)
     MultiTargetDropdown:SetValues(newList)
 end
-RefreshPlayerDropdowns()
 
 -------\\ Connections //-------
-Players.PlayerAdded:Connect(RefreshPlayerDropdowns)
-Players.PlayerRemoving:Connect(RefreshPlayerDropdowns)
+Players.PlayerAdded:Connect(refreshDropdowns)
+Players.PlayerRemoving:Connect(refreshDropdowns)
 
 -------\\ Main //-------
-local PlayerDropdown = Tabs.Main:AddDropdown("PlayerDropdown", {
-    Title = "Select Player",
+PlayerDropdown = Tabs.Main:AddDropdown("PlayerDropdown", {
+    Title = "Teleport to Player",
     Values = GetPlayerNames(),
     Multi = false,
     Default = nil,
@@ -65,8 +66,8 @@ local PlayerDropdown = Tabs.Main:AddDropdown("PlayerDropdown", {
     end
 })
 
-local MultiTargetDropdown = Tabs.Main:AddDropdown("TargetPlayersDropdown", {
-    Title = "Select Players",
+MultiTargetDropdown = Tabs.Main:AddDropdown("TargetPlayersDropdown", {
+    Title = "Target Players",
     Values = GetPlayerNames(),
     Multi = true,
     Default = {},
@@ -93,4 +94,5 @@ SaveManager:BuildConfigSection(Tabs.Settings)
 Window:SelectTab(1)
 SaveManager:LoadAutoloadConfig()
 
-Notify("Script has been loaded.")
+refreshDropdowns()
+Notify("Script loaded successfully.")
