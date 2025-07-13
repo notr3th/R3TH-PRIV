@@ -5,6 +5,13 @@ local LocalPlayer = Players.LocalPlayer
 local PlayerDropdown, MultiTargetDropdown
 
 -------\\ UI Variables //-------
+--[[
+    You may swap these three links back to the original ones, it will not break my dropdown refresh fix, I'm only using them because I slightly modified them for my script.
+
+    local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
+    local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/SaveManager.lua"))()
+    local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
+]]
 local Fluent = loadstring(game:HttpGet("https://raw.githubusercontent.com/R3THdev/R3TH-PRIV/refs/heads/main/Fluent/Fluent.lua"))()
 local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/R3THdev/R3TH-PRIV/refs/heads/main/Fluent/Addons/SaveManager.lua"))()
 local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/R3THdev/R3TH-PRIV/refs/heads/main/Fluent/Addons/InterfaceManager.lua"))()
