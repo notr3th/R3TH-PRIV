@@ -2,7 +2,7 @@
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 
-local PlayerDropdown, MultiTargetDropdown
+local Dropdown1, Dropdown2
 
 --[[
     You may swap these three links back to the original ones, it will not break my dropdown refresh fix, I'm only using them because I slightly modified them for my script.
@@ -41,20 +41,20 @@ local function Notify(Message, Time)
     })
 end
 
-local function GetPlayerNames()
-    local names = {}
-    for _, player in ipairs(Players:GetPlayers()) do
-        if player ~= LocalPlayer then
-            table.insert(names, player.Name)
+local function playerList()
+    local List = {}
+    for _, Player in ipairs(Players:GetPlayers()) do
+        if Player ~= LocalPlayer then
+            table.insert(List, Player.Name)
         end
     end
-    return names
+    return List
 end
 
 local function refreshDropdowns()
-    local newList = GetPlayerNames()
-    PlayerDropdown:SetValues(newList)
-    MultiTargetDropdown:SetValues(newList)
+    local newList = playerList()
+    Dropdown1:SetValues(newList)
+    Dropdown2:SetValues(newList)
 end
 
 -------\\ Connections //-------
@@ -62,9 +62,9 @@ Players.PlayerAdded:Connect(refreshDropdowns)
 Players.PlayerRemoving:Connect(refreshDropdowns)
 
 -------\\ Main //-------
-PlayerDropdown = Tabs.Main:AddDropdown("PlayerDropdown", {
-    Title = "Teleport to Player",
-    Values = GetPlayerNames(),
+Dropdown1 = Tabs.Main:AddDropdown("Dropdown1", {
+    Title = "Select Player",
+    Values = playerList(),
     Multi = false,
     Default = nil,
     Callback = function(Value)
@@ -72,19 +72,20 @@ PlayerDropdown = Tabs.Main:AddDropdown("PlayerDropdown", {
     end
 })
 
-MultiTargetDropdown = Tabs.Main:AddDropdown("TargetPlayersDropdown", {
-    Title = "Target Players",
-    Values = GetPlayerNames(),
+Dropdown2 = Tabs.Main:AddDropdown("Dropdown2", {
+    Title = "Select Players",
+    Values = playerList(),
     Multi = true,
     Default = {},
     Callback = function(Value)
-        local values = {}
-        for name, selected in pairs(Value) do
-            if selected then
-                table.insert(values, name)
+        local Values = {}
+        for Name, Selected in pairs(Value) do
+            if Selected then
+                table.insert(Values, Name)
             end
         end
-        print("Selected:", table.concat(values, ", "))
+
+        print("Selected:", table.concat(Values, ", "))
     end
 })
 
