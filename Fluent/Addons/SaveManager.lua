@@ -287,6 +287,44 @@ local SaveManager = {} do
 			})
 		end})
 
+		section:AddButton({Title = "Delete configuration", Callback = function()
+        	local name = SaveManager.Options.SaveManager_ConfigList.Value
+        	if not name then
+        		return self.Library:Notify({
+        			Title = "R3TH PRIV",
+        			Content = "Configuration Loader",
+        			SubContent = "No configuration selected to delete.",
+        			Duration = 7
+        		})
+        	end
+        
+        	local file = self.Folder .. "/settings/" .. name .. ".json"
+        	if isfile(file) then
+        		delfile(file)
+        
+        		self.Library:Notify({
+        			Title = "R3TH PRIV",
+        			Content = "Configuration Loader",
+        			SubContent = string.format("Successfully deleted: %q", name),
+        			Duration = 7
+        		})
+        
+        		SaveManager.Options.SaveManager_ConfigList:SetValues(self:RefreshConfigList())
+        		SaveManager.Options.SaveManager_ConfigList:SetValue(nil)
+        
+        		if isfile(self.Folder .. "/settings/autoload.txt") and readfile(self.Folder .. "/settings/autoload.txt") == name then
+        			delfile(self.Folder .. "/settings/autoload.txt")
+        		end
+        	else
+        		self.Library:Notify({
+        			Title = "R3TH PRIV",
+        			Content = "Configuration Loader",
+        			SubContent = "Configuration file not found.",
+        			Duration = 7
+        		})
+        	end
+        end})
+
 		section:AddButton({Title = "Refresh configuration list", Callback = function()
 			SaveManager.Options.SaveManager_ConfigList:SetValues(self:RefreshConfigList())
 			SaveManager.Options.SaveManager_ConfigList:SetValue(nil)
