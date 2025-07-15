@@ -6,7 +6,7 @@
     License: MIT
     GitHub: https://github.com/dawid-scripts/Fluent
 --]]
-
+print("2.0")
 local a, b = {
     {
         1,
