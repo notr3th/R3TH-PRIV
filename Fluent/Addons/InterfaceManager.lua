@@ -106,62 +106,6 @@ local InterfaceManager = {} do
                 InterfaceManager:SaveSettings()
 			end
 		})
-
-		local ButtonToggle
-        local ToggleButtonGui
-        
-        local function createToggleButton()
-        	if ToggleButtonGui then return end
-        
-        	ToggleButtonGui = Instance.new("ScreenGui")
-        	ToggleButtonGui.Name = "ScreenGui"
-        	ToggleButtonGui.ResetOnSpawn = false
-        	ToggleButtonGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-        
-        	local button = Instance.new("TextButton")
-        	button.Name = "TextButton"
-        	button.Size = UDim2.new(0, 80, 0, 30)
-        	button.Position = UDim2.new(0, 10, 0, 10)
-        	button.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-        	button.TextColor3 = Color3.fromRGB(255, 255, 255)
-        	button.Text = "Toggle UI"
-        	button.Parent = ToggleButtonGui
-        
-        	button.Active = true
-        	button.Draggable = true
-        
-        	button.MouseButton1Click:Connect(function()
-        		Library:Toggle()
-        	end)
-        
-        	ToggleButtonGui.Parent = game:GetService("CoreGui")
-        end
-        
-        local function removeToggleButton()
-        	if ToggleButtonGui then
-        		ToggleButtonGui:Destroy()
-        		ToggleButtonGui = nil
-        	end
-        end
-        
-        ButtonToggle = section:AddToggle("ButtonToggle", {
-        	Title = "UI Button Toggle",
-        	Description = "Adds a mobile-friendly button to toggle UI",
-        	Default = Settings.ButtonToggle or false,
-        	Callback = function(Value)
-        		Settings.ButtonToggle = Value
-        		InterfaceManager:SaveSettings()
-        		if Value then
-        			createToggleButton()
-        		else
-        			removeToggleButton()
-        		end
-        	end
-        })
-        
-        if Settings.ButtonToggle then
-        	createToggleButton()
-        end
 	
 		local MenuKeybind = section:AddKeybind("MenuKeybind", { Title = "Minimize Bind", Default = Settings.MenuKeybind })
 		MenuKeybind:OnChanged(function()
