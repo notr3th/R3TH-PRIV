@@ -6,7 +6,7 @@
     License: MIT
     GitHub: https://github.com/dawid-scripts/Fluent
 --]]
-print("3.0")
+print("4.0")
 local a, b = {
     {
         1,
@@ -2853,8 +2853,8 @@ local aa = {
                 end
                 for _, val in pairs(l.Values) do
                     if not currentValues[val] then
-                        local btnFrame, label = e("Frame", {/*...*/}), e("TextLabel", {/*...*/})
-                        local button = e("TextButton", {/*...*/}, {btnFrame, label})
+                        local btnFrame, label = e("Frame", {}), e("TextLabel", {})
+                        local button = e("TextButton", {}, {btnFrame, label})
                         button.ButtonLabel = label
                         button.Parent = t
                         existingButtons[val] = button
