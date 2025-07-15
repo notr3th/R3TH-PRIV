@@ -2989,11 +2989,25 @@ local aa = {
                 z()
                 y()
             end
-            function l.SetValues(B, C)
-                if C then
-                    l.Values = C
-                end
+            function l.SetValues(_, newValues)
+                if not newValues or typeof(newValues) ~= "table" then return end
+                local previous = l.Value
+                l.Values = newValues
                 l:BuildDropdownList()
+                if l.Multi and typeof(previous) == "table" then
+                    local restored = {}
+                    for k, _ in next, previous do
+                        if table.find(newValues, k) then
+                            restored[k] = true
+                        end
+                    end
+                    l.Value = restored
+                elseif not l.Multi and typeof(previous) == "string" and table.find(newValues, previous) then
+                    l.Value = previous
+                else
+                    l.Value = nil
+                end
+                l:Display()
             end
             function l.OnChanged(B, C)
                 l.Changed = C
