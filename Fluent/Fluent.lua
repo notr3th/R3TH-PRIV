@@ -6,7 +6,7 @@
     License: MIT
     GitHub: https://github.com/dawid-scripts/Fluent
 --]]
-print("v1.01")
+
 local a, b = {
     {
         1,
@@ -2843,132 +2843,146 @@ local aa = {
                     return l.Value and 1 or 0
                 end
             end
-			function l.BuildDropdownList()
-                local values = l.Values
-                local existingButtons = {}
-                local activeKeys = {}
-                for _, child in ipairs(t:GetChildren()) do
-                    if child:IsA("TextButton") and child:FindFirstChild("ButtonLabel") then
-                        local label = child:FindFirstChild("ButtonLabel")
-                        if label and label:IsA("TextLabel") then
-                            local value = label.Text
-                            existingButtons[value] = child
-                        end
-                    elseif not child:IsA("UIListLayout") then
-                        child:Destroy()
+            function l.BuildDropdownList(B)
+                local C, D = l.Values, {}
+                for E, F in next, t:GetChildren() do
+                    if not F:IsA "UIListLayout" then
+                        F:Destroy()
                     end
                 end
-                local buttonHandlers = {}
-                for _, value in ipairs(values) do
-                    activeKeys[value] = true
-                    local button = existingButtons[value]
-                    local frame, label, handler
-                    if not button then
-                        local selector =
-                            e("Frame", {
+                local G = 0
+                for H, I in next, C do
+                    local J = {}
+                    G = G + 1
+                    local K, L =
+                        e(
+                            "Frame",
+                            {
                                 Size = UDim2.fromOffset(4, 14),
                                 BackgroundColor3 = Color3.fromRGB(76, 194, 255),
                                 Position = UDim2.fromOffset(-1, 16),
                                 AnchorPoint = Vector2.new(0, 0.5),
                                 ThemeTag = {BackgroundColor3 = "Accent"}
-                            }, {
-                                e("UICorner", {CornerRadius = UDim.new(0, 2)})
-                            })
-            
-                        label =
-                            e("TextLabel", {
-                                FontFace = Font.new("rbxasset://fonts/families/GothamSSm.json"),
-                                Text = value,
+                            },
+                            {e("UICorner", {CornerRadius = UDim.new(0, 2)})}
+                        ),
+                        e(
+                            "TextLabel",
+                            {
+                                FontFace = Font.new "rbxasset://fonts/families/GothamSSm.json",
+                                Text = I,
                                 TextColor3 = Color3.fromRGB(200, 200, 200),
                                 TextSize = 13,
                                 TextXAlignment = Enum.TextXAlignment.Left,
-                                BackgroundTransparency = 1,
+                                BackgroundColor3 = Color3.fromRGB(255, 255, 255),
                                 AutomaticSize = Enum.AutomaticSize.Y,
+                                BackgroundTransparency = 1,
                                 Size = UDim2.fromScale(1, 1),
                                 Position = UDim2.fromOffset(10, 0),
                                 Name = "ButtonLabel",
                                 ThemeTag = {TextColor3 = "Text"}
-                            })
-            
-                        button =
-                            e("TextButton", {
-                                Size = UDim2.new(1, -5, 0, 32),
-                                BackgroundTransparency = 1,
-                                ZIndex = 23,
-                                Text = "",
-                                Parent = t,
-                                ThemeTag = {BackgroundColor3 = "DropdownOption"}
-                            }, {
-                                selector,
-                                label,
-                                e("UICorner", {CornerRadius = UDim.new(0, 6)})
-                            })
+                            }
+                        )
+                    local M, N =
+                        (e(
+                        "TextButton",
+                        {
+                            Size = UDim2.new(1, -5, 0, 32),
+                            BackgroundTransparency = 1,
+                            ZIndex = 23,
+                            Text = "",
+                            Parent = t,
+                            ThemeTag = {BackgroundColor3 = "DropdownOption"}
+                        },
+                        {K, L, e("UICorner", {CornerRadius = UDim.new(0, 6)})}
+                    ))
+                    if j.Multi then
+                        N = l.Value[I]
                     else
-                        label = button:FindFirstChild("ButtonLabel")
+                        N = l.Value == I
                     end
-                    local selected = j.Multi and l.Value[value] or l.Value == value
-                    local highlightSpring = c.SpringMotor(1, button, "BackgroundTransparency")
-                    local selectorSpring = c.SpringMotor(1, selector, "BackgroundTransparency")
-                    local sizeMotor = d.SingleMotor.new(6)
-                    sizeMotor:onStep(function(height)
-                        selector.Size = UDim2.new(0, 4, 0, height)
-                    end)
-                    c.AddSignal(button.MouseEnter, function()
-                        highlightSpring(selected and 0.85 or 0.89)
-                    end)
-                    c.AddSignal(button.MouseLeave, function()
-                        highlightSpring(selected and 0.89 or 1)
-                    end)
-                    c.AddSignal(button.MouseButton1Down, function()
-                        highlightSpring(0.92)
-                    end)
-                    c.AddSignal(button.MouseButton1Up, function()
-                        highlightSpring(selected and 0.85 or 0.89)
-                    end)
-                    handler = {
-                        UpdateButton = function()
-                            selected = j.Multi and l.Value[value] or l.Value == value
-                            highlightSpring(selected and 0.89 or 1)
-                            sizeMotor:setGoal(d.Spring.new(selected and 14 or 6, {frequency = 6}))
-                            selectorSpring(selected and 0 or 1)
+                    local O, P = c.SpringMotor(1, M, "BackgroundTransparency")
+                    local Q, R = c.SpringMotor(1, K, "BackgroundTransparency")
+                    local S = d.SingleMotor.new(6)
+                    S:onStep(
+                        function(T)
+                            K.Size = UDim2.new(0, 4, 0, T)
                         end
-                    }
-                    label.InputBegan:Connect(function(input)
-                        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-                            local toggle = not selected
-                            if l:GetActiveValues() == 1 and not toggle and not j.AllowNull then
-                                return
+                    )
+                    c.AddSignal(
+                        M.MouseEnter,
+                        function()
+                            P(N and 0.85 or 0.89)
+                        end
+                    )
+                    c.AddSignal(
+                        M.MouseLeave,
+                        function()
+                            P(N and 0.89 or 1)
+                        end
+                    )
+                    c.AddSignal(
+                        M.MouseButton1Down,
+                        function()
+                            P(0.92)
+                        end
+                    )
+                    c.AddSignal(
+                        M.MouseButton1Up,
+                        function()
+                            P(N and 0.85 or 0.89)
+                        end
+                    )
+                    function J.UpdateButton(T)
+                        if j.Multi then
+                            N = l.Value[I]
+                            if N then
+                                P(0.89)
                             end
-                            if j.Multi then
-                                selected = toggle
-                                l.Value[value] = selected and true or nil
-                            else
-                                selected = toggle
-                                l.Value = selected and value or nil
-                                for _, h in pairs(buttonHandlers) do
-                                    h:UpdateButton()
+                        else
+                            N = l.Value == I
+                            P(N and 0.89 or 1)
+                        end
+                        S:setGoal(d.Spring.new(N and 14 or 6, {frequency = 6}))
+                        R(N and 0 or 1)
+                    end
+                    L.InputBegan:Connect(
+                        function(T)
+                            if
+                                T.UserInputType == Enum.UserInputType.MouseButton1 or
+                                    T.UserInputType == Enum.UserInputType.Touch
+                             then
+                                local U = not N
+                                if l:GetActiveValues() == 1 and not U and not j.AllowNull then
+                                else
+                                    if j.Multi then
+                                        N = U
+                                        l.Value[I] = N and true or nil
+                                    else
+                                        N = U
+                                        l.Value = N and I or nil
+                                        for V, W in next, D do
+                                            W:UpdateButton()
+                                        end
+                                    end
+                                    J:UpdateButton()
+                                    l:Display()
+                                    k:SafeCallback(l.Callback, l.Value)
+                                    k:SafeCallback(l.Changed, l.Value)
                                 end
                             end
-                            handler:UpdateButton()
-                            l:Display()
-                            k:SafeCallback(l.Callback, l.Value)
-                            k:SafeCallback(l.Changed, l.Value)
                         end
-                    end)
-                    handler:UpdateButton()
+                    )
+                    J:UpdateButton()
                     l:Display()
-                    buttonHandlers[button] = handler
-                end
-                for value, button in pairs(existingButtons) do
-                    if not activeKeys[value] then
-                        button:Destroy()
-                    end
+                    D[M] = J
                 end
                 x = 0
-                for button, _ in pairs(buttonHandlers) do
-                    if button:FindFirstChild("ButtonLabel") then
-                        local label = button.ButtonLabel
-                        x = math.max(x, label.TextBounds.X)
+                for J, K in next, D do
+                    if J.ButtonLabel then
+                        if J.ButtonLabel.TextBounds.X > x then
+                            x = J.ButtonLabel.TextBounds.X
+                        end
                     end
                 end
                 x = x + 30
