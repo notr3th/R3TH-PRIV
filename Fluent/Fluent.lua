@@ -6,7 +6,7 @@
     License: MIT
     GitHub: https://github.com/dawid-scripts/Fluent
 --]]
-print("v2")
+
 local a, b = {
     {
         1,
@@ -2848,7 +2848,6 @@ local aa = {
                 local existing = {}
                 for _, child in ipairs(t:GetChildren()) do
                     print(child)
-                    print(child.Text or "nil")
                     print(child.Name or "nil")
 	            	if child:IsA("Frame") and child.Name ~= "UIListLayout" then
 	            		existing[child.Name] = child
