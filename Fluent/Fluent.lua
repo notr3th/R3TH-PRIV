@@ -6,7 +6,7 @@
     License: MIT
     GitHub: https://github.com/dawid-scripts/Fluent
 --]]
-
+print("3333")
 local a, b = {
     {
         1,
@@ -2843,7 +2843,7 @@ local aa = {
                     return l.Value and 1 or 0
                 end
             end
-                        function l.BuildDropdownList(B)
+            function l.BuildDropdownList(B)
                 local C, D = l.Values, {}
                 local existing = {}
                 for _, child in ipairs(t:GetChildren()) do
@@ -2851,16 +2851,22 @@ local aa = {
 	            		existing[child.Name] = child
 	            	end
 	            end
+                print("Existing list:")
+                for name, obj in pairs(existing) do
+                    print(" -", name, obj.ClassName)
+                end
 	            for name, frame in pairs(existing) do
 	            	if not table.find(C, name) then
 	            		frame:Destroy()
 	            		existing[name] = nil
 	            	end
 	            end
+                print("Revised existing list:")
+                for name, obj in pairs(existing) do
+                    print(" -", name, obj.ClassName)
+                end
                 local G = 0
                 for H, I in next, C do
-                    print(I)
-                    print(H)
                     if not existing[I] then
                         local J = {}
                         G = G + 1
