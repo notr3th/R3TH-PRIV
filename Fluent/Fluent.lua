@@ -2847,11 +2847,8 @@ local aa = {
                 local C, D = l.Values, {}
                 local existing = {}
                 for _, child in ipairs(t:GetChildren()) do
-                    print(child)
-                    print(child.Name)
-	            	if child:IsA("Frame") and child.Name ~= "UIListLayout" then
-                        print(child.Text)
-	            		existing[child.Name] = child
+	            	if child:IsA("TextButton") then
+	            		existing[child.ButtonLabel.Text] = child
 	            	end
 	            end
 	            for name, frame in pairs(existing) do
