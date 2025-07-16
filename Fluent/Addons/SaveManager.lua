@@ -209,126 +209,121 @@ local SaveManager = {} do
 		section:AddInput("SaveManager_ConfigName",    { Title = "Configuration name" })
 		section:AddDropdown("SaveManager_ConfigList", { Title = "Configuration list", Values = self:RefreshConfigList(), AllowNull = true })
 
-		section:AddButton({
-            Title = "Create configuration",
-            Callback = function()
-                local name = SaveManager.Options.SaveManager_ConfigName.Value
-
-                if name:gsub(" ", "") == "" then 
-                    return self.Library:Notify({
-						Title = "R3TH PRIV",
-						Content = "Configuration Loader",
-						SubContent = "The configuration cannot have an empty name.",
-						Duration = 7
-					})
-                end
-
-                local success, err = self:Save(name)
-                if not success then
-                    return self.Library:Notify({
-						Title = "R3TH PRIV",
-						Content = "Configuration Loader",
-						SubContent = "Failed to save configuration: " .. err,
-						Duration = 7
-					})
-                end
-
-				self.Library:Notify({
-					Title = "R3TH PRIV",
-					Content = "Configuration Loader",
-					SubContent = string.format("Successfully created: %q", name),
-					Duration = 7
-				})
-
-                SaveManager.Options.SaveManager_ConfigList:SetValues(self:RefreshConfigList())
-                SaveManager.Options.SaveManager_ConfigList:SetValue(nil)
-            end
-        })
-
-        section:AddButton({Title = "Load configuration", Callback = function()
-			local name = SaveManager.Options.SaveManager_ConfigList.Value
-
-			local success, err = self:Load(name)
-			if not success then
-				return self.Library:Notify({
-					Title = "R3TH PRIV",
-					Content = "Configuration Loader",
-					SubContent = "Failed to load configuration: " .. err,
-					Duration = 7
-				})
-			end
-
-			self.Library:Notify({
-				Title = "R3TH PRIV",
-				Content = "Configuration Loader",
-				SubContent = string.format("Successfully loaded: %q", name),
-				Duration = 7
-			})
-		end})
-
-		section:AddButton({Title = "Overwrite configuration", Callback = function()
-			local name = SaveManager.Options.SaveManager_ConfigList.Value
-
-			local success, err = self:Save(name)
-			if not success then
-				return self.Library:Notify({
-					Title = "R3TH PRIV",
-					Content = "Configuration Loader",
-					SubContent = "Failed to overwrite configuration: " .. err,
-					Duration = 7
-				})
-			end
-
-			self.Library:Notify({
-				Title = "R3TH PRIV",
-				Content = "Configuration Loader",
-				SubContent = string.format("Successfully overwrote: %q", name),
-				Duration = 7
-			})
-		end})
-
-		section:AddButton({Title = "Delete configuration", Callback = function()
-        	local name = SaveManager.Options.SaveManager_ConfigList.Value
-        	if not name then
-        		return self.Library:Notify({
-        			Title = "R3TH PRIV",
-        			Content = "Configuration Loader",
-        			SubContent = "No configuration selected to delete.",
-        			Duration = 7
-        		})
-        	end
+		section:AddDropdown("SaveManager_Action", {
+        	Title = "Configuration Actions",
+        	Values = { "Create Config", "Load Config", "Overwrite Config", "Delete Config", "Refresh Config" },
+        	Default = nil,
+        	Callback = function(action)
+        		local name = SaveManager.Options.SaveManager_ConfigList.Value
+        		local inputName = SaveManager.Options.SaveManager_ConfigName.Value
         
-        	local file = self.Folder .. "/settings/" .. name .. ".json"
-        	if isfile(file) then
-        		delfile(file)
+        		if action == "Create Config" then
+        			if inputName:gsub(" ", "") == "" then 
+        				return SaveManager.Library:Notify({
+        					Title = "R3TH PRIV",
+        					Content = "Configuration Loader",
+        					SubContent = "The configuration cannot have an empty name.",
+        					Duration = 7
+        				})
+        			end
         
-        		self.Library:Notify({
-        			Title = "R3TH PRIV",
-        			Content = "Configuration Loader",
-        			SubContent = string.format("Successfully deleted: %q", name),
-        			Duration = 7
-        		})
+        			local success, err = SaveManager:Save(inputName)
+        			if not success then
+        				return SaveManager.Library:Notify({
+        					Title = "R3TH PRIV",
+        					Content = "Configuration Loader",
+        					SubContent = "Failed to save configuration: " .. err,
+        					Duration = 7
+        				})
+        			end
         
-        		SaveManager.Options.SaveManager_ConfigList:SetValues(self:RefreshConfigList())
-        		SaveManager.Options.SaveManager_ConfigList:SetValue(nil)
+        			SaveManager.Library:Notify({
+        				Title = "R3TH PRIV",
+        				Content = "Configuration Loader",
+        				SubContent = string.format("Successfully created: %q", inputName),
+        				Duration = 7
+        			})
         
-        		if isfile(self.Folder .. "/settings/autoload.txt") and readfile(self.Folder .. "/settings/autoload.txt") == name then
-        			delfile(self.Folder .. "/settings/autoload.txt")
+        			SaveManager.Options.SaveManager_ConfigList:SetValues(SaveManager:RefreshConfigList())
+        			SaveManager.Options.SaveManager_ConfigList:SetValue(nil)
+        
+        		elseif action == "Load Config" then
+        			local success, err = SaveManager:Load(name)
+        			if not success then
+        				return SaveManager.Library:Notify({
+        					Title = "R3TH PRIV",
+        					Content = "Configuration Loader",
+        					SubContent = "Failed to load configuration: " .. err,
+        					Duration = 7
+        				})
+        			end
+        
+        			SaveManager.Library:Notify({
+        				Title = "R3TH PRIV",
+        				Content = "Configuration Loader",
+        				SubContent = string.format("Successfully loaded: %q", name),
+        				Duration = 7
+        			})
+        
+        		elseif action == "Overwrite Config" then
+        			local success, err = SaveManager:Save(name)
+        			if not success then
+        				return SaveManager.Library:Notify({
+        					Title = "R3TH PRIV",
+        					Content = "Configuration Loader",
+        					SubContent = "Failed to overwrite configuration: " .. err,
+        					Duration = 7
+        				})
+        			end
+        
+        			SaveManager.Library:Notify({
+        				Title = "R3TH PRIV",
+        				Content = "Configuration Loader",
+        				SubContent = string.format("Successfully overwrote: %q", name),
+        				Duration = 7
+        			})
+        
+        		elseif action == "Delete Config" then
+        			if not name then
+        				return SaveManager.Library:Notify({
+        					Title = "R3TH PRIV",
+        					Content = "Configuration Loader",
+        					SubContent = "No configuration selected to delete.",
+        					Duration = 7
+        				})
+        			end
+        
+        			local file = SaveManager.Folder .. "/settings/" .. name .. ".json"
+        			if isfile(file) then
+        				delfile(file)
+        				SaveManager.Library:Notify({
+        					Title = "R3TH PRIV",
+        					Content = "Configuration Loader",
+        					SubContent = string.format("Successfully deleted: %q", name),
+        					Duration = 7
+        				})
+        
+        				SaveManager.Options.SaveManager_ConfigList:SetValues(SaveManager:RefreshConfigList())
+        				SaveManager.Options.SaveManager_ConfigList:SetValue(nil)
+        
+        				if isfile(SaveManager.Folder .. "/settings/autoload.txt") and readfile(SaveManager.Folder .. "/settings/autoload.txt") == name then
+        					delfile(SaveManager.Folder .. "/settings/autoload.txt")
+        				end
+        			else
+        				SaveManager.Library:Notify({
+        					Title = "R3TH PRIV",
+        					Content = "Configuration Loader",
+        					SubContent = "Configuration file not found.",
+        					Duration = 7
+        				})
+        			end
+        
+        		elseif action == "Refresh Config" then
+        			SaveManager.Options.SaveManager_ConfigList:SetValues(SaveManager:RefreshConfigList())
+        			SaveManager.Options.SaveManager_ConfigList:SetValue(nil)
         		end
-        	else
-        		self.Library:Notify({
-        			Title = "R3TH PRIV",
-        			Content = "Configuration Loader",
-        			SubContent = "Configuration file not found.",
-        			Duration = 7
-        		})
         	end
-        end})
-
-		section:AddButton({Title = "Refresh configuration list", Callback = function()
-			SaveManager.Options.SaveManager_ConfigList:SetValues(self:RefreshConfigList())
-			SaveManager.Options.SaveManager_ConfigList:SetValue(nil)
-		end})
+        })
 
 		local AutoloadButton
 		AutoloadButton = section:AddButton({Title = "Auto-load the specified configuration.", Description = "Current autoload configuration: none", Callback = function()
