@@ -6,7 +6,7 @@
     License: MIT
     GitHub: https://github.com/dawid-scripts/Fluent
 --]]
-print("3333")
+
 local a, b = {
     {
         1,
@@ -2847,24 +2847,19 @@ local aa = {
                 local C, D = l.Values, {}
                 local existing = {}
                 for _, child in ipairs(t:GetChildren()) do
+                    print(child)
+                    print(child.Text or "nil")
+                    print(child.Name or "nil")
 	            	if child:IsA("Frame") and child.Name ~= "UIListLayout" then
 	            		existing[child.Name] = child
 	            	end
 	            end
-                print("Existing list:")
-                for name, obj in pairs(existing) do
-                    print(" -", name, obj.ClassName)
-                end
 	            for name, frame in pairs(existing) do
 	            	if not table.find(C, name) then
 	            		frame:Destroy()
 	            		existing[name] = nil
 	            	end
 	            end
-                print("Revised existing list:")
-                for name, obj in pairs(existing) do
-                    print(" -", name, obj.ClassName)
-                end
                 local G = 0
                 for H, I in next, C do
                     if not existing[I] then
