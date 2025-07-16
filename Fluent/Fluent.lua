@@ -2848,8 +2848,9 @@ local aa = {
                 local existing = {}
                 for _, child in ipairs(t:GetChildren()) do
                     print(child)
-                    print(child.Name or "nil")
+                    print(child.Name)
 	            	if child:IsA("Frame") and child.Name ~= "UIListLayout" then
+                        print(child.Text)
 	            		existing[child.Name] = child
 	            	end
 	            end
