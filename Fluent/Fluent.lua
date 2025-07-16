@@ -6,7 +6,7 @@
     License: MIT
     GitHub: https://github.com/dawid-scripts/Fluent
 --]]
-print("0.1")
+print("2.0")
 local a, b = {
     {
         1,
@@ -2895,6 +2895,7 @@ local aa = {
                             (e(
                             "TextButton",
                             {
+                                Name = I,
                                 Size = UDim2.new(1, -5, 0, 32),
                                 BackgroundTransparency = 1,
                                 ZIndex = 23,
