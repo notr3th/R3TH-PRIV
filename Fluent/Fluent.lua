@@ -6,7 +6,7 @@
     License: MIT
     GitHub: https://github.com/dawid-scripts/Fluent
 --]]
-print("2.0")
+
 local a, b = {
     {
         1,
@@ -2843,7 +2843,7 @@ local aa = {
                     return l.Value and 1 or 0
                 end
             end
-            function l.BuildDropdownList(B)
+                        function l.BuildDropdownList(B)
                 local C, D = l.Values, {}
                 local existing = {}
                 for _, child in ipairs(t:GetChildren()) do
@@ -2859,6 +2859,8 @@ local aa = {
 	            end
                 local G = 0
                 for H, I in next, C do
+                    print(I)
+                    print(H)
                     if not existing[I] then
                         local J = {}
                         G = G + 1
@@ -2895,7 +2897,6 @@ local aa = {
                             (e(
                             "TextButton",
                             {
-                                Name = I,
                                 Size = UDim2.new(1, -5, 0, 32),
                                 BackgroundTransparency = 1,
                                 ZIndex = 23,
