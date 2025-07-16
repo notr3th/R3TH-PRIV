@@ -5,12 +5,18 @@ local LocalPlayer = Players.LocalPlayer
 local Dropdown1, Dropdown2
 
 --[[
-    You may swap these three links back to the original ones, it will not break my dropdown refresh fix, I'm only using them because I slightly modified them for my script.
+    The SaveManager and InterfaceManager links can be switched back to the original versions if preferred.
+    I’ve made custom modifications to both for use in my own script, but those changes may not suit everyone.
+
+    I recommend keeping the Fluent link to my modified version.
+    It includes an improvement to SetValues for dropdowns: instead of rebuilding the entire list,
+    it will only add or remove values that differ from the previous list—greatly improving performance.
 
     local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
     local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/SaveManager.lua"))()
     local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
 ]]
+
 local Fluent = loadstring(game:HttpGet("https://raw.githubusercontent.com/R3THdev/R3TH-PRIV/refs/heads/main/Fluent/Fluent.lua"))()
 local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/R3THdev/R3TH-PRIV/refs/heads/main/Fluent/Addons/SaveManager.lua"))()
 local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/R3THdev/R3TH-PRIV/refs/heads/main/Fluent/Addons/InterfaceManager.lua"))()
